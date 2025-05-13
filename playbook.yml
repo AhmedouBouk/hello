@@ -1,0 +1,14 @@
+---
+- name: Déploiement de l'application
+  hosts: web
+  become: yes
+  tasks:
+    - name: Installer Apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: Déployer la page d'accueil
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html

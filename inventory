@@ -1,0 +1,2 @@
+[web]
+172.20.10.2 ansible_user=vboxuser
