@@ -14,7 +14,7 @@ pipeline {
 
         stage('Install Ansible') {
             steps {
-                sh 'ansible --version || (apt-get update && apt-get install -y ansible)'
+                sh 'ansible --version || (sudo apt-get update && sudo apt-get install -y ansible)'
             }
         }
 
