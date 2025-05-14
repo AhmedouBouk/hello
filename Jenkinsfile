@@ -12,9 +12,9 @@ pipeline {
             }
         }
 
-        stage('Install Ansible') {
+        stage('Verify Ansible') {
             steps {
-                sh 'ansible --version || (sudo apt-get update && sudo apt-get install -y ansible)'
+                sh 'ansible --version'
             }
         }
 
