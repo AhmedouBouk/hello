@@ -1,2 +1,2 @@
 [web]
-172.20.10.2 ansible_user=vboxuser
+192.168.101.24 ansible_user=vboxuser
