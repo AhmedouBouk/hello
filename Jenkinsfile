@@ -20,12 +20,7 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                ansiblePlaybook(
-                    playbook: "${ANSIBLE_PLAYBOOK}",
-                    inventory: "${ANSIBLE_INVENTORY}",
-                    become: true,
-                    colorized: true
-                )
+                sh "ansible-playbook ${ANSIBLE_PLAYBOOK} -i ${ANSIBLE_INVENTORY} --become"
             }
         }
 
