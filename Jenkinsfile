@@ -1,17 +1,38 @@
 pipeline {
     agent any
+    environment {
+        ANSIBLE_INVENTORY = 'inventory'
+        ANSIBLE_PLAYBOOK = 'playbook.yml'
+    }
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    credentialsId: '173cf848-7f65-4d96-b41e-563107d32cd2', // ton vrai ID Jenkins
-                    url: 'git@github.com:AhmedouBouk/hello.git'         // URL SSH, pas HTTPS !
+                    url: 'https://github.com/AhmedouBouk/hello.git'         // URL HTTPS au lieu de SSH
             }
         }
 
-        stage('Test') {
+        stage('Install Ansible') {
             steps {
-                echo '✔️ Clonage réussi avec SSH !'
+                sh 'sudo apt-get update'
+                sh 'sudo apt-get install -y ansible'
+            }
+        }
+
+        stage('Run Ansible Playbook') {
+            steps {
+                ansiblePlaybook(
+                    playbook: "${ANSIBLE_PLAYBOOK}",
+                    inventory: "${ANSIBLE_INVENTORY}",
+                    become: true,
+                    colorized: true
+                )
+            }
+        }
+
+        stage('Deployment Confirmation') {
+            steps {
+                echo '✔️ Déploiement terminé avec succès !'
             }
         }
     }
