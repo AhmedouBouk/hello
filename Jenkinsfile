@@ -23,7 +23,7 @@ pipeline {
             steps {
                 sh """
                 export ANSIBLE_HOST_KEY_CHECKING=${ANSIBLE_HOST_KEY_CHECKING}
-                ansible-playbook ${ANSIBLE_PLAYBOOK} -i ${ANSIBLE_INVENTORY} --private-key ~/.ssh/id_rsa --become
+                ansible-playbook ${ANSIBLE_PLAYBOOK} -i ${ANSIBLE_INVENTORY} --private-key /var/jenkins_home/.ssh/id_rsa --become
                 """
             }
         }
