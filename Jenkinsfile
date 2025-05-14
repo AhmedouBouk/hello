@@ -8,27 +8,24 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/AhmedouBouk/hello.git'         // URL HTTPS au lieu de SSH
+                    url: 'https://github.com/AhmedouBouk/hello.git'
             }
         }
 
-        stage('Verify Ansible') {
+        stage('Install Ansible') {
             steps {
-                bat 'echo Vérification de la présence d\'Ansible...'
-                bat 'where ansible || echo Ansible n\'est pas installé ou n\'est pas dans le PATH'
+                sh 'ansible --version || (apt-get update && apt-get install -y ansible)'
             }
         }
 
         stage('Run Ansible Playbook') {
             steps {
-                bat "echo Simulation d'exécution du playbook Ansible"
-                bat "echo Commande qui serait exécutée: ansible-playbook %ANSIBLE_PLAYBOOK% -i %ANSIBLE_INVENTORY%"
-                // Commenté car Ansible n'est probablement pas installé sur Windows
-                // ansiblePlaybook(
-                //    playbook: "${ANSIBLE_PLAYBOOK}",
-                //    inventory: "${ANSIBLE_INVENTORY}",
-                //    colorized: true
-                // )
+                ansiblePlaybook(
+                    playbook: "${ANSIBLE_PLAYBOOK}",
+                    inventory: "${ANSIBLE_INVENTORY}",
+                    become: true,
+                    colorized: true
+                )
             }
         }
 
