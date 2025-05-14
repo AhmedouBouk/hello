@@ -3,6 +3,7 @@ pipeline {
     environment {
         ANSIBLE_INVENTORY = 'inventory'
         ANSIBLE_PLAYBOOK = 'playbook.yml'
+        ANSIBLE_HOST_KEY_CHECKING = 'False'
     }
     stages {
         stage('Checkout') {
@@ -20,7 +21,10 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                sh "ansible-playbook ${ANSIBLE_PLAYBOOK} -i ${ANSIBLE_INVENTORY} --become"
+                sh """
+                export ANSIBLE_HOST_KEY_CHECKING=${ANSIBLE_HOST_KEY_CHECKING}
+                ansible-playbook ${ANSIBLE_PLAYBOOK} -i ${ANSIBLE_INVENTORY} --private-key ~/.ssh/id_rsa --become
+                """
             }
         }
 
