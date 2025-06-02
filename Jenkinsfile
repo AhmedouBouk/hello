@@ -2,13 +2,10 @@ pipeline {
     agent any
 
     environment {
-        ANSIBLE_INVENTORY = 'inventory'
-        ANSIBLE_PLAYBOOK = 'playbook.yml'
-        ANSIBLE_HOST_KEY_CHECKING = 'False'
         SONAR_PROJECT_KEY = 'hello-project'
         SONAR_PROJECT_NAME = 'Hello Project'
         SONAR_PROJECT_VERSION = '1.0'
-        SONAR_SOURCES = '.'  // adjust if needed
+        SONAR_SOURCES = '.'  // adjust path to your source code if needed
     }
 
     stages {
@@ -22,11 +19,11 @@ pipeline {
 
         stage('SonarQube Code Analysis') {
             environment {
-                scannerHome = tool 'Sonar'  // must match Jenkins Sonar installation name
+                scannerHome = tool 'Sonar'  // Must match your SonarQube Scanner name in Jenkins
             }
             steps {
                 script {
-                    withSonarQubeEnv('Sonar') { // 'Sonar' must match your Jenkins SonarQube server name
+                    withSonarQubeEnv('Sonar') { // Must match your SonarQube Server name in Jenkins
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
                             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
@@ -39,27 +36,9 @@ pipeline {
             }
         }
 
-        stage('Verify Ansible') {
+        stage('Confirmation') {
             steps {
-                sh 'ansible --version'
-            }
-        }
-
-        stage('Run Ansible Playbook') {
-            steps {
-                sh """
-                    export ANSIBLE_HOST_KEY_CHECKING=False
-                    ansible-playbook ${ANSIBLE_PLAYBOOK} \
-                    -i ${ANSIBLE_INVENTORY} \
-                    --private-key ~/.ssh/id_rsa \
-                    --become
-                """
-            }
-        }
-
-        stage('Deployment Confirmation') {
-            steps {
-                echo '✔️ Déploiement terminé avec succès !'
+                echo '✔️ SonarQube analysis completed successfully.'
             }
         }
     }
