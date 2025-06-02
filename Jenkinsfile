@@ -19,11 +19,11 @@ pipeline {
 
         stage('SonarQube Code Analysis') {
             environment {
-                scannerHome = tool 'Sonar'  // Must match your SonarQube Scanner name in Jenkins
+                scannerHome = tool 'sonar'  // Must match your SonarQube Scanner name in Jenkins
             }
             steps {
                 script {
-                    withSonarQubeEnv('Sonar') { // Must match your SonarQube Server name in Jenkins
+                    withSonarQubeEnv('sonar') { // Must match your SonarQube Server name in Jenkins
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
                             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
