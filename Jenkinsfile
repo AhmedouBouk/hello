@@ -5,7 +5,7 @@ pipeline {
         SONAR_PROJECT_KEY = 'hello-project'
         SONAR_PROJECT_NAME = 'Hello Project'
         SONAR_PROJECT_VERSION = '1.0'
-        SONAR_SOURCES = '.'  // adjust path to your source code if needed
+        SONAR_SOURCES = '.'  // Chemin vers le code source, adapte si besoin
     }
 
     stages {
@@ -19,15 +19,15 @@ pipeline {
 
         stage('SonarQube Code Analysis') {
             environment {
-                scannerHome = tool 'sonar'  // Must match your SonarQube Scanner name in Jenkins
+                scannerHome = tool 'sonar'  // Nom exact du scanner dans Jenkins (Global Tool Configuration)
             }
             steps {
                 script {
-                    withSonarQubeEnv('sonar') { // Must match your SonarQube Server name in Jenkins
+                    withSonarQubeEnv('sonar') { // Nom exact du serveur Sonar dans Jenkins (Configure System)
                         sh """
                             ${scannerHome}/bin/sonar-scanner \
                             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-                            -Dsonar.projectName=${SONAR_PROJECT_NAME} \
+                            -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
                             -Dsonar.projectVersion=${SONAR_PROJECT_VERSION} \
                             -Dsonar.sources=${SONAR_SOURCES}
                         """
